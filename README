@@ -1,18 +1,26 @@
-Linux kernel
-============
+Assignment 1 README
 
-There are several guides for kernel developers and users. These guides can
-be rendered in a number of formats, like HTML and PDF. Please read
-Documentation/admin-guide/README.rst first.
+Members: Justin Chan
 
-In order to build the documentation, use ``make htmldocs`` or
-``make pdfdocs``.  The formatted documentation can also be read online at:
+1. (worked on assignment alone)
 
-    https://www.kernel.org/doc/html/latest/
-
-There are various text files in the Documentation/ subdirectory,
-several of them using the Restructured Text markup notation.
-
-Please read the Documentation/process/changes.rst file, as it contains the
-requirements for building and running the kernel, and information about
-the problems which may result by upgrading your kernel.
+2. Below are the steps I took to complete this assignment
+    - I first installed VMWare Workbench to create a Linux VM
+    - I downloaded an Ubuntu Linux Image to mount onto the VM so that I can install 
+      that distribution of linux onto my VM
+    - I then created my VM. Notable settings include setting VMX capability (so that a nested VM
+      is possible) and setting 2 vCPUs, 4096 MB of RAM, and 200 GB of disk storage (on an external
+      hard drive).
+    - I then downloaded the assignment 1 code and Makefile (cmpe283-1.c) directly from Canvas onto
+      the VM. 
+    - I used git clone to clone the torvalds linux repository
+    - I then edited the code file to comply with the assignment 1 guidelines. I referred Volume 3
+      Chapter 24 sections 6, 7, and 8 to find the Bit Positions of each of the control MSRs. I then
+      made sure to read from each of these bits in the MSRs in the code file and output whether or
+      not the control was settable and/or clearable.
+    - After my additions to the template code file, I would build the code using make and mount the
+      corresponding .ko module using the insmod command
+    - I would verify my print output using the dmesg command and clean up my module using the rmmod
+      command.
+    - Finally, I committed the kernel module, C code file, and Makefile associated with this 
+      assignment to this code repository.
