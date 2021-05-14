@@ -47,7 +47,9 @@
      
    - After the nested VM was created, a test C program was created to test out our added CPUID functionality. In this program, I test the exit numbers 0 and 1, since
      both these exit numbers are supported by SDM and KVM. I also test 70 and 71, exit numbers not defined in the SDM, and exit numbers 5 and 6, which are defined
-     in the SDM but are not supported by the KVM.
+     in the SDM but are not supported by the KVM. Below are images of the test results.
+     
+     ![alt text](https://github.com/justin-chan-sjsu/linux/blob/Assignment3/testing.PNG?raw=true)
      
    - Once this test was completed, I ran another test program using CPUID, that listed all the exit numbers supported by the KVM and their exit counts. 
    
