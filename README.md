@@ -15,7 +15,7 @@
    
    Here are the exit count results with ept disabled:
    
-   ![alt text](https://github.com/justin-chan-sjsu/linux/blob/Assignment4/NumberOfEachExitEPT0-1.PNG?raw=true) 
+   ![alt text](https://github.com/justin-chan-sjsu/linux/blob/Assignment4/NumberOfEachExitEPT0-1.PNG?raw=true)   
    ![alt text](https://github.com/justin-chan-sjsu/linux/blob/Assignment4/NumberOfEachExitEPT0-2.PNG?raw=true)
    
 3. What did you learn from the count of exits? Was the count what you expected? If not, why not? 
