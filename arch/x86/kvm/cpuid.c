@@ -32,6 +32,10 @@
 u32 kvm_cpu_caps[NR_KVM_CPU_CAPS] __read_mostly;
 EXPORT_SYMBOL_GPL(kvm_cpu_caps);
 
+// JJC
+extern _Atomic u32 number_of_exits;
+extern _Atomic u32 number_of_each_exit[];
+
 static u32 xstate_required_size(u64 xstate_bv, bool compacted)
 {
 	int feature_bit = 0;
@@ -1220,7 +1224,161 @@ int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
 
 	eax = kvm_rax_read(vcpu);
 	ecx = kvm_rcx_read(vcpu);
-	kvm_cpuid(vcpu, &eax, &ebx, &ecx, &edx, false);
+
+	// JJC
+
+	if (eax == 0x4fffffff) {
+		eax = number_of_exits;
+	}
+	else if (eax == 0x4ffffffe) {
+		u32 exit_reason = ecx;
+
+		// Check if exit reason is in SDM, if not, enter this if statement and set registers accordingly
+		if (!(exit_reason == 0 ||
+		      exit_reason == 1 ||
+		      exit_reason == 2 ||
+		      exit_reason == 3 ||
+		      exit_reason == 4 ||
+		      exit_reason == 5 ||
+		      exit_reason == 6 ||
+		      exit_reason == 7 ||
+		      exit_reason == 8 ||
+		      exit_reason == 9 ||
+		      exit_reason == 10 ||
+		      exit_reason == 11 ||
+		      exit_reason == 12 ||
+		      exit_reason == 13 ||
+		      exit_reason == 14 ||
+		      exit_reason == 15 ||
+		      exit_reason == 16 ||
+		      exit_reason == 17 ||
+		      exit_reason == 18 ||
+		      exit_reason == 19 ||
+		      exit_reason == 20 ||
+		      exit_reason == 21 ||
+		      exit_reason == 22 ||
+		      exit_reason == 23 ||
+		      exit_reason == 24 ||
+		      exit_reason == 25 ||
+		      exit_reason == 26 ||
+		      exit_reason == 27 ||
+		      exit_reason == 28 ||
+		      exit_reason == 29 ||
+		      exit_reason == 30 ||
+		      exit_reason == 31 ||
+		      exit_reason == 32 ||
+		      exit_reason == 33 ||
+		      exit_reason == 34 ||
+		      exit_reason == 36 ||
+		      exit_reason == 37 ||
+		      exit_reason == 39 ||
+		      exit_reason == 40 ||
+		      exit_reason == 41 ||
+		      exit_reason == 43 ||
+		      exit_reason == 44 ||
+		      exit_reason == 45 ||
+		      exit_reason == 46 ||
+		      exit_reason == 47 ||
+		      exit_reason == 48 ||
+		      exit_reason == 49 ||
+		      exit_reason == 50 ||
+		      exit_reason == 51 ||
+		      exit_reason == 52 ||
+		      exit_reason == 53 ||
+		      exit_reason == 54 ||
+		      exit_reason == 55 ||
+		      exit_reason == 56 ||
+		      exit_reason == 57 ||
+		      exit_reason == 58 ||
+		      exit_reason == 59 ||
+		      exit_reason == 60 ||
+		      exit_reason == 61 ||
+		      exit_reason == 62 ||
+		      exit_reason == 63 ||
+		      exit_reason == 64 ||
+		      exit_reason == 66 ||
+		      exit_reason == 67 ||
+		      exit_reason == 68)) {
+			eax = 0;
+			ebx = 0;
+			ecx = 0;
+			edx = 0xffffffff;
+		}
+	      	else if (!(exit_reason == 0 ||
+			   exit_reason == 1 ||
+			   exit_reason == 2 ||
+			   exit_reason == 3 ||
+			   exit_reason == 4 ||
+			   exit_reason == 7 ||
+			   exit_reason == 8 ||
+			   exit_reason == 9 ||
+			   exit_reason == 10 ||
+			   exit_reason == 12 ||
+			   exit_reason == 13 ||
+			   exit_reason == 14 ||
+			   exit_reason == 15 ||
+			   exit_reason == 16 ||
+			   exit_reason == 18 ||
+			   exit_reason == 19 ||
+			   exit_reason == 20 ||
+			   exit_reason == 21 ||
+			   exit_reason == 22 ||
+			   exit_reason == 23 ||
+			   exit_reason == 24 ||
+			   exit_reason == 25 ||
+			   exit_reason == 26 ||
+			   exit_reason == 27 ||
+			   exit_reason == 28 ||
+			   exit_reason == 29 ||
+			   exit_reason == 30 ||
+			   exit_reason == 31 ||
+			   exit_reason == 32 ||
+			   exit_reason == 33 ||
+			   exit_reason == 34 ||
+			   exit_reason == 36 ||
+			   exit_reason == 37 ||
+			   exit_reason == 39 ||
+			   exit_reason == 40 ||
+			   exit_reason == 41 ||
+			   exit_reason == 43 ||
+			   exit_reason == 44 ||
+			   exit_reason == 45 ||
+			   exit_reason == 46 ||
+			   exit_reason == 47 ||
+			   exit_reason == 48 ||
+			   exit_reason == 49 ||
+			   exit_reason == 50 ||
+			   exit_reason == 51 ||
+			   exit_reason == 52 ||
+			   exit_reason == 53 ||
+			   exit_reason == 54 ||
+			   exit_reason == 55 ||
+			   exit_reason == 56 ||
+			   exit_reason == 57 ||
+			   exit_reason == 58 ||
+			   exit_reason == 59 ||
+			   exit_reason == 60 ||
+			   exit_reason == 61 ||
+			   exit_reason == 62 ||
+			   exit_reason == 63 ||
+			   exit_reason == 64 ||
+			   exit_reason == 67 ||
+			   exit_reason == 68)) {
+			// not kvm enabled
+			eax = 0;
+			ebx = 0;
+			ecx = 0;
+			edx = 0;
+		}
+		else {
+			// Valid exit type... write to eax
+			eax = number_of_each_exit[exit_reason];
+		}
+	}
+	else {
+		kvm_cpuid(vcpu, &eax, &ebx, &ecx, &edx, false);
+	}
+
 	kvm_rax_write(vcpu, eax);
 	kvm_rbx_write(vcpu, ebx);
 	kvm_rcx_write(vcpu, ecx);

@@ -67,6 +67,10 @@
 MODULE_AUTHOR("Qumranet");
 MODULE_LICENSE("GPL");
 
+// JJC
+_Atomic u32 number_of_exits = 0;
+_Atomic u32 number_of_each_exit[70];
+
 #ifdef MODULE
 static const struct x86_cpu_id vmx_cpu_id[] = {
 	X86_MATCH_FEATURE(X86_FEATURE_VMX, NULL),
@@ -5968,6 +5972,10 @@ static int __vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
 	u32 vectoring_info = vmx->idt_vectoring_info;
 	u16 exit_handler_index;
 
+	// JJC
+	number_of_exits++;
+	number_of_each_exit[exit_reason.basic]++;
+	
 	/*
 	 * Flush logged GPAs PML buffer, this will make dirty_bitmap more
 	 * updated. Another good is, in kvm_vm_ioctl_get_dirty_log, before
