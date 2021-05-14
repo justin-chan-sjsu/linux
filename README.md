@@ -6,7 +6,11 @@
    
 2. Include a sample of your print of exit count output from dmesg from “with ept” and “without ept”. 
 
-   This sample is not from '''dmesg'''. Instead, it comes from output from a test C program.
+   This sample is not from dmesg. Instead, it comes from output from a test C program.
+   
+   Here are the exit count results with ept enabled:
+   
+   ![alt text](?raw=true)
    
 3. What did you learn from the count of exits? Was the count what you expected? If not, why not? 
 
