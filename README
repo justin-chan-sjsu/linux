@@ -1,2 +1,33 @@
 1. For each member in your team, provide 1 paragraph detailing what parts of the lab that member implemented /
-researched. (You may skip this question if you are doing the lab by yourself).  
+   researched. (You may skip this question if you are doing the lab by yourself).
+   
+   For this lab I had worked alone.
+
+2. Describe in detail the steps you used to complete the assignment.
+
+   - I used the environment I had set up during Assignment 2. The environment used is an Ubuntu 20.04 VM built using VMWare Workstation 16 Player. 
+     The Linux kernel source code was cloned from the torvalds repository and built on the VM.
+     
+   - I started making my code changes in the vmx.c file located arch/x86/kvm/vmx/ directory since this is the file where vmx exits are handled. 
+     In this code, I globally declare a new variable _Atomic u32 number_of_each_exit[70]. This variable is used to keep track of how much each exit type
+     was triggered in the KVM code.
+     
+   - Still within the vmx.c code, I added additional code to the __vmx_handle_exit function. The code I added was an increment of the 
+     number_of_each_exit[exit_reason.basic] variable. The exit_reason.basic index is already used within the KVM code to indicate the 
+     type of exit being handled.
+     
+   - I then added changes to the cpuid.c file located in the arch/x86/kvm/ directory. This code file deals with calls to the CPUID instruction.
+     I globally declare the variable extern number_of_each_exit[] which references the variable with the same name in the vmx.c file earlier.
+     
+   - I then added changes to the kvm_emulate_cpuid function in the cpuid.c code. I  added a if-statement check to determine if the
+     eax variable matches the leaf value specified in the assignment (0x4FFFFFFE). If eax matches that value, I check the exit reason, which should be
+     stored in the ecx variable. I do two checks; the first check I do is if the exit reason supplied is not one provided in the SDM, I set eax, ebc, and ecx
+     to 0 and edx to 0xFFFFFFFF. I then check if the exit reason is supported by the KVM. If it is not, I set eax, ebx, ecx, and edx to 0. Otherwise, if the
+     exit reason is supported by both the SDM and the KVM, then is set eax to be equal to number_of_each_exit[ecx], which should be the number of exits
+     for that exit type.
+     
+   - Some miscellaneous notes about the cpuid.c code changes above; it is possible that an exit reason is defined by the SDM but is not supported by
+     the KVM. However, exit reasons not supported by the SDM are also not supported by the KVM. In this case, the edx is set to 0xFFFFFFFF (indicating that
+     the exit reason is not defined by the SDM) instead of 0 since the SDM condition is checked before the KVM one. Also, the basic exit reasons are found
+     in Appendix C of Volume 3 of the SDM. The exits supported by the KVM are found in the Linux kernel source code; they are found in the 
+     linux/arch/x86/include/uapi/asm/vmx.h file. 
