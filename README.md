@@ -47,11 +47,16 @@
      
    - After the nested VM was created, a test C program was created to test out our added CPUID functionality. In this program, I test the exit numbers 0 and 1, since
      both these exit numbers are supported by SDM and KVM. I also test 70 and 71, exit numbers not defined in the SDM, and exit numbers 5 and 6, which are defined
-     in the SDM but are not supported by the KVM. Below are images of the test results.
+     in the SDM but are not supported by the KVM. Below are images of the test results:
      
      ![alt text](https://github.com/justin-chan-sjsu/linux/blob/Assignment3/testing.PNG?raw=true)
      
+     Note the values of ecx refer to the exit reason number, eax refers to the exit count, and edx has a specific value depending on if the exit number is supported.
+     
    - Once this test was completed, I ran another test program using CPUID, that listed all the exit numbers supported by the KVM and their exit counts. 
+
+     ![alt text](https://github.com/justin-chan-sjsu/linux/blob/Assignment3/NumberOfEachExit1.PNG?raw=true)
+     ![alt text](https://github.com/justin-chan-sjsu/linux/blob/Assignment3/NumberOfEachExit2.PNG?raw=true)
    
 3. Comment on the frequency of exits – does the number of exits increase at a stable rate? Or are there more exits performed during certain VM operations? 
   Approximately how many exits does a full VM boot entail? 
