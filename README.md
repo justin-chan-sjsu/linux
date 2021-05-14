@@ -54,9 +54,9 @@
 3. Comment on the frequency of exits – does the number of exits increase at a stable rate? Or are there more exits performed during certain VM operations? 
   Approximately how many exits does a full VM boot entail? 
   
-  The exits are pretty frequent. However, there were more exits for certain exit types than there were for other exit types. Most exit types had exit counts of 0.
-  This makes sense in many of these cases; for example, exit reason 20, which had 0 exits, indicates that a VM attempted to execute VMLAUNCH, which a machine 
-  should not really be doing during boot up. In total, it seems the VM exited about 3.45 million times.
+   The exits are pretty frequent. However, there were more exits for certain exit types than there were for other exit types. Most exit types had exit counts of 0.
+   This makes sense in many of these cases; for example, exit reason 20, which had 0 exits, indicates that a VM attempted to execute VMLAUNCH, which a machine 
+   should not really be doing during boot up. In total, it seems the VM exited about 3.45 million times.
   
 4. Of the exit types defined in the SDM, which are the most frequent? Least? 
 
